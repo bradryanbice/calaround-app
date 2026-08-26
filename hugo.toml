@@ -1,0 +1,17 @@
+baseURL = "https://calaround.app/"
+locale = "en-us"
+title = "CalAround"
+enableRobotsTXT = true
+
+[params]
+  description = "Photograph your work calendar, review every change, then sync it to your iPhone. CalAround is the workaround for a locked-down work computer."
+  # Contact goes through a form rather than a mailto: — see README.
+  formEndpoint = "https://formspree.io/f/REPLACE_ME"
+
+[markup.goldmark.renderer]
+  unsafe = true
+
+[markup.goldmark.extensions]
+  table = true
+
+[taxonomies]

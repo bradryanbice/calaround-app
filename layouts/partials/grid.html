@@ -1,0 +1,18 @@
+{{/* The calendar grid is the ground the whole site sits on — day columns and hour
+     rules, the thing you photograph. Drawn rather than imaged so it scales and
+     recolours with the theme. */}}
+<svg class="grid" viewBox="0 0 1400 {{ .h }}" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+  <g class="hours">
+    {{ $rows := div .h 56 }}
+    {{ range $i := seq 0 $rows }}
+      {{ $y := mul $i 56 }}
+      <line x1="0" y1="{{ $y }}" x2="1400" y2="{{ $y }}"/>
+    {{ end }}
+  </g>
+  <g class="days">
+    {{ range $i := seq 0 7 }}
+      {{ $x := mul $i 200 }}
+      <line x1="{{ $x }}" y1="0" x2="{{ $x }}" y2="{{ $.h }}"/>
+    {{ end }}
+  </g>
+</svg>

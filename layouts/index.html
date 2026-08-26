@@ -1,0 +1,215 @@
+{{ define "main" }}
+<section class="hero">
+  {{ partial "grid.html" (dict "h" 700) }}
+  <div class="bar">
+    <div>
+      <h1>Your work calendar, <em>without</em> the work computer.</h1>
+      <p class="lede">Your employer locks down the laptop and blocks the sync. So take a photo of Outlook instead. CalAround reads the meetings off it, shows you exactly what it proposes to change, and writes nothing until you agree.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="#review">See what it actually does</a>
+        <a class="btn btn-ghost" href="{{ "/privacy/" | relURL }}">Where your photos go</a>
+      </div>
+      <p class="notyet">TestFlight beta opening soon — the join link lands here first.</p>
+    </div>
+    <div class="herophone">
+      <div class="device tilt" style="--w:300px">
+        <span class="btns"><i class="action"></i><i class="up"></i><i class="down"></i><i class="power"></i></span>
+        <span class="screen">
+          <img src="{{ "assets/img/02-review-conflicts.webp" | relURL }}" width="1206" height="2622"
+               alt="CalAround's change review for 24–28 August: one event added, one changed, one removed, with a red conflict warning that Dr. Patel annual checkup at Thursday 2:00 PM overlaps Roadmap workshop by one hour." loading="eager" decoding="async">
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="review">
+  <div class="bar">
+    <p class="kicker">The part that matters</p>
+    <h2>You read the diff. Then it writes.</h2>
+    <p class="sub">A photo of a calendar is a guess, and a guess should never touch your calendar unsupervised. So CalAround does what a good tool does with an uncertain input: it shows its work and waits.</p>
+
+    <div class="pair">
+      <article class="feat">
+        <div class="feattext">
+          <p class="ftag">Change review</p>
+          <h3>Every change is a row you can refuse</h3>
+          <p>Added, changed, removed — each one toggleable, each one tappable to correct. A meeting that <em>moved</em> shows before → after rather than vanishing and reappearing, so you can see it's the same meeting at a new time.</p>
+          <p>Anything the reader wasn't sure of is marked <em>Unverified</em> and sorted to the top, next to the region of the photo it came from. Nothing reaches your calendar until you tap Sync.</p>
+          <ul class="ticks">
+            <li>Low-confidence reads surface first, not buried at the bottom</li>
+            <li>Tap any row to fix a misread time or title before it lands</li>
+            <li>Every sync is recorded, and every sync can be undone</li>
+          </ul>
+        </div>
+        <div class="featshot">
+          <div class="device">
+            <span class="btns"><i class="action"></i><i class="up"></i><i class="down"></i><i class="power"></i></span>
+            <span class="screen">
+              <img src="{{ "assets/img/03-review-rows.webp" | relURL }}" width="1206" height="2622"
+                   alt="The review list showing an Added row for Standup on Monday 9:00 AM and a Removed row striking through Budget review (cancelled) on Tuesday, each with its own toggle." loading="lazy" decoding="async">
+            </span>
+          </div>
+        </div>
+      </article>
+
+      <article class="feat rev">
+        <div class="feattext">
+          <p class="ftag">Conflicts</p>
+          <h3>It tells you what clashes. It doesn't stop you.</h3>
+          <p>Work meetings that land on top of a personal appointment are flagged in red. Meetings that leave no gap, or double-book each other the way Outlook renders split columns, are flagged in amber.</p>
+          <p>None of it blocks the sync. Your work calendar is what it is — the flag is the product, not a gate. Severity is never colour alone: every flag carries an icon and a label too.</p>
+          <ul class="ticks">
+            <li>Checks against every calendar you have, not just the scanned one</li>
+            <li>Optionally keeps watching, and tells you when a <em>personal</em> event creates a new clash</li>
+            <li>An all-day banner doesn't flag every meeting underneath it</li>
+          </ul>
+        </div>
+        <div class="featshot">
+          <div class="device">
+            <span class="btns"><i class="action"></i><i class="up"></i><i class="down"></i><i class="power"></i></span>
+            <span class="screen">
+              <img src="{{ "assets/img/04-week-grid.webp" | relURL }}" width="1206" height="2622"
+                   alt="The week grid preview: incoming events outlined in dashed green, a removed event struck through in red, and conflicted blocks covered in diagonal stripes, with a legend reading Staying, Incoming, Leaving, Conflict." loading="lazy" decoding="async">
+            </span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="how">
+  {{ partial "grid.html" (dict "h" 900) }}
+  <div class="bar">
+    <p class="kicker">Photo to calendar</p>
+    <h2>Four steps, and a way back from all of them</h2>
+    <p class="sub">Read this as a diff, because that's what the app is. Each step below is one change to the state of your calendar — and the last one undoes the rest.</p>
+
+    <div class="diff">
+      <div class="row">
+        <span class="mark keep" aria-hidden="true">=</span>
+        <div>
+          <h3>Photograph the week</h3>
+          <p>Camera or Photos, one shot or several for a scrolled view. Overlapping captures are merged rather than duplicated. Your calendar is untouched at this point — nothing has happened yet.</p>
+        </div>
+      </div>
+      <div class="row">
+        <span class="mark mod" aria-hidden="true">~</span>
+        <div>
+          <h3>It reads the grid</h3>
+          <p>Titles, start and end times, all-day banners, and the side-by-side columns Outlook uses for double-bookings. It also reports the <em>date range it could actually see</em> — which becomes the boundary for everything that follows.</p>
+        </div>
+      </div>
+      <div class="row">
+        <span class="mark add" aria-hidden="true">+</span>
+        <div>
+          <h3>You approve the changes</h3>
+          <p>Compared against what CalAround synced last time, inside that boundary only. Toggle off anything you don't want. Pin an event and no future scan will ever touch it. <a href="#review">See the review screen</a>.</p>
+        </div>
+      </div>
+      <div class="row">
+        <span class="mark del" aria-hidden="true">−</span>
+        <div>
+          <h3>And you can take it all back</h3>
+          <p>Every sync is recorded with its inverse. <em>Undo this sync</em> deletes what it added, restores what it changed, and puts back what it removed — even days later, on a different launch.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec band" id="boundaries">
+  <div class="bar">
+    <div>
+      <p class="kicker">What it will not do</p>
+      <h2>The limits are the feature</h2>
+      <p class="sub">An app that writes to your calendar should be boring and predictable about it. These aren't settings — they're guarantees, enforced in code and covered by tests.</p>
+      <ul class="facts">
+        <li><strong>One calendar.</strong> CalAround creates and writes to <em>Work (Scanned)</em>, and never modifies or deletes an event on any other calendar. Hide it, share it, or delete the whole thing in one tap.</li>
+        <li><strong>One date range.</strong> Only the span the photo actually showed. A meeting one day outside it is invisible to the app — it cannot be changed or removed.</li>
+        <li><strong>Your edits win.</strong> Pin an event and scans leave it alone. If a later scan disagrees, CalAround says so rather than overwriting you.</li>
+        <li><strong>No account.</strong> No sign-up, no server of ours, nothing to breach. Scans stay on your iPhone.</li>
+      </ul>
+    </div>
+    <div class="featshot">
+      <div class="device">
+        <span class="btns"><i class="action"></i><i class="up"></i><i class="down"></i><i class="power"></i></span>
+        <span class="screen">
+          <img src="{{ "assets/img/07-history-undo.webp" | relURL }}" width="1206" height="2622"
+               alt="The History screen showing a sync of 24–28 August that added one event, changed one, and removed one, with an Undo this sync button." loading="lazy" decoding="async">
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="providers">
+  <div class="bar">
+    <p class="kicker">Reading the photo</p>
+    <h2>You choose who sees the picture</h2>
+    <p class="sub">A photo of your work calendar is sensitive — it's your colleagues' names and your employer's business. CalAround names the reader on every screen where it matters, and the choice is yours. The full detail is on the <a href="{{ "/privacy/" | relURL }}">privacy page</a>.</p>
+
+    <div class="provgrid">
+      <div class="prov cloud">
+        <p class="ptag">Leaves your device</p>
+        <h3>Claude</h3>
+        <p>The photo is sent to Anthropic's API to be read, and the events come back. It is not stored by CalAround afterwards, and you supply your own API key.</p>
+        <p class="when">Available now</p>
+      </div>
+      <div class="prov ondevice">
+        <p class="ptag">Stays on device</p>
+        <h3>Apple Intelligence</h3>
+        <p>The same reading, done on your iPhone. Nothing is uploaded and no key is needed. This will become the default once it ships.</p>
+        <p class="when">Arriving with iOS 27</p>
+      </div>
+      <div class="prov none">
+        <p class="ptag">Reads nothing</p>
+        <h3>Sample data</h3>
+        <p>A fixed demo week, so you can try the review, grid, and conflict screens end to end before deciding whether to trust it with a real photo.</p>
+        <p class="when">Available now</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="screens">
+  <div class="bar">
+    <p class="kicker">The rest of it</p>
+    <h2>Three more screens worth knowing about</h2>
+
+    <div class="gallery">
+      <figure class="shot">
+        <div class="device">
+          <span class="btns"><i class="action"></i><i class="up"></i><i class="down"></i><i class="power"></i></span>
+          <span class="screen">
+            <img src="{{ "assets/img/01-capture-tips.webp" | relURL }}" width="1206" height="2622"
+                 alt="The Scan screen, showing the current reader and four tips for a clean read: fill the frame with the grid, keep the time gutter visible, avoid glare and shadow, and take two photos of a scrolled view." loading="lazy" decoding="async">
+          </span>
+        </div>
+        <figcaption><b>Scan</b>What separates a clean read from a screen of Unverified chips is almost always the photo, so the tips are on the screen where you take it.</figcaption>
+      </figure>
+      <figure class="shot">
+        <div class="device">
+          <span class="btns"><i class="action"></i><i class="up"></i><i class="down"></i><i class="power"></i></span>
+          <span class="screen">
+            <img src="{{ "assets/img/06-photo-vs-parsed.webp" | relURL }}" width="1206" height="2622"
+                 alt="Photo vs. parsed: the original photograph with each detected event outlined, beside the list of events read from it, with the selected row highlighted in both." loading="lazy" decoding="async">
+          </span>
+        </div>
+        <figcaption><b>Photo vs. parsed</b>Tap any event to see the exact region of the photo it came from. This is how an uncertain read gets settled without retaking the shot.</figcaption>
+      </figure>
+      <figure class="shot">
+        <div class="device">
+          <span class="btns"><i class="action"></i><i class="up"></i><i class="down"></i><i class="power"></i></span>
+          <span class="screen">
+            <img src="{{ "assets/img/05-settings-privacy.webp" | relURL }}" width="1206" height="2622"
+                 alt="Settings, showing the vision provider picker set to Sample data with a Stays on device privacy badge, the target calendar Work (Scanned), and full calendar access." loading="lazy" decoding="async">
+          </span>
+        </div>
+        <figcaption><b>Settings</b>The reader, the target calendar, and your access level — each stated plainly, plus rules that rewrite meeting titles before anything is written.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+{{ end }}

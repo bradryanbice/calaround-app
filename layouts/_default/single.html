@@ -1,0 +1,16 @@
+{{ define "main" }}
+<header class="pagehead">
+  {{ partial "grid.html" (dict "h" 340) }}
+  <div class="bar">
+    {{ with .Params.kicker }}<p class="kicker">{{ . }}</p>{{ end }}
+    <h1>{{ .Title }}</h1>
+    {{ with .Description }}<p class="lede">{{ . }}</p>{{ end }}
+  </div>
+</header>
+
+<article class="prose-wrap">
+  <div class="prose-body">
+    {{ .Content }}
+  </div>
+</article>
+{{ end }}

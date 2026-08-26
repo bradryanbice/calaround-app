@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ if .IsHome }}CalAround — Your work calendar, without the work computer{{ else }}{{ .Title }} — CalAround{{ end }}</title>
+<meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ site.Params.description }}{{ end }}">
+<meta name="theme-color" content="#FCFCFD" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0E1013" media="(prefers-color-scheme: dark)">
+<meta property="og:title" content="{{ if .IsHome }}CalAround{{ else }}{{ .Title }} — CalAround{{ end }}">
+<meta property="og:description" content="{{ with .Description }}{{ . }}{{ else }}{{ site.Params.description }}{{ end }}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ .Permalink }}">
+<link rel="canonical" href="{{ .Permalink }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap">
+{{/* Fingerprinted: the filename carries a content hash, so a changed stylesheet is a
+     new URL and can never be served stale from cache. Pages sets long cache lifetimes
+     on assets, which otherwise makes a CSS change look like a failed deploy. */}}
+{{ $css := resources.Get "css/site.css" | minify | fingerprint "sha256" }}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}" crossorigin="anonymous">
+</head>
+<body class="{{ if .IsHome }}home{{ else }}prose-page{{ end }}">
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="topbar">
+  <div class="bar">
+    <a class="brand" href="{{ "/" | relURL }}">CalAround</a>
+    <nav class="nav" aria-label="Main">
+      <a href="{{ "/#review" | relURL }}">Features</a>
+      <a href="{{ "/support/" | relURL }}">Support</a>
+      <a href="{{ "/privacy/" | relURL }}">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+{{ block "main" . }}{{ end }}
+</main>
+
+<footer class="sitefoot">
+  <div class="bar footgrid">
+    <div>
+      <p class="fbrand">CalAround</p>
+      <p class="fnote">Photograph your work calendar, review every change, then sync it. Nothing is written until you say so.</p>
+    </div>
+    <nav aria-label="Footer">
+      <p class="flabel">Site</p>
+      <a href="{{ "/#review" | relURL }}">Features</a>
+      <a href="{{ "/support/" | relURL }}">Support</a>
+      <a href="{{ "/privacy/" | relURL }}">Privacy Policy</a>
+      <a href="{{ "/terms/" | relURL }}">Terms of Use</a>
+    </nav>
+    <div>
+      <p class="flabel">Contact</p>
+      <a href="{{ "/support/#contact" | relURL }}">Send a message</a>
+      <p class="fcopy">© 2026 Brad Bice</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
