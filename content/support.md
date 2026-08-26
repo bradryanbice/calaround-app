@@ -52,8 +52,16 @@ You can try the whole app with no key at all: **Settings → Read photos with �
 ## Contact {#contact}
 
 <div class="formwrap">
-<p class="formtodo">TODO before launch: replace <code>formEndpoint</code> in <code>hugo.toml</code> with a real Formspree form ID. Until then this form posts nowhere.</p>
-<form action="{{< param formEndpoint >}}" method="POST">
+<!-- Netlify Forms. The three attributes below are the whole wiring: Netlify's
+     post-processing parses the DEPLOYED html, finds the form by `name`, and
+     starts accepting posts at this same path. `data-netlify` is the documented
+     spelling of the bare `netlify` attribute and is valid html5. The hidden
+     form-name input is what attributes a submission to this form — without it
+     the post is accepted and filed nowhere. bot-field is the honeypot: real
+     people never see it, bots fill it, and Netlify silently drops those. -->
+<form name="contact" method="POST" action="/thanks/" data-netlify="true" netlify-honeypot="bot-field">
+  <input type="hidden" name="form-name" value="contact">
+  <p class="hp"><label>Leave this field empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
   <div class="field">
     <label for="cf-email">Your email</label>
     <input id="cf-email" type="email" name="email" required autocomplete="email">

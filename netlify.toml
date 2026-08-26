@@ -1,0 +1,82 @@
+# Netlify build config. Mirrors royalrumblestats.com, which is the closest
+# sibling: same Hugo version, no dart-sass step (this site's one stylesheet is
+# plain CSS through Hugo's own pipeline, not SCSS — do not copy bradbice.com's
+# dart-sass download in here unless that changes).
+[build]
+  publish = "public"
+  command = "hugo --gc --minify"
+
+  # Skip the deploy when nothing Hugo reads has changed. A build here is almost
+  # entirely fixed overhead — the site builds in well under a second and the
+  # deploy around it is minutes of clone, toolchain and upload — so the only
+  # lever on build minutes is the NUMBER of deploys.
+  #
+  # None of the excluded paths is a Hugo input. hugo.toml declares no custom
+  # module mounts, so Hugo reads content/, data/, layouts/, assets/, static/,
+  # themes/, i18n/, archetypes/ and hugo.toml. netlify.toml itself is
+  # deliberately NOT excluded: headers and redirects are applied at deploy time,
+  # so a change to them needs a deploy.
+  #
+  # `git diff --quiet` exits 0 on no difference and Netlify reads exit 0 as
+  # "skip". Every way this can go wrong — an empty $CACHED_COMMIT_REF on a first
+  # build or after a cache clear, a ref missing from the shallow clone, a bad
+  # pathspec — exits non-zero and therefore BUILDS. The failure mode is a wasted
+  # deploy, not a stale site.
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- . ':(exclude).github' ':(exclude)README.md' ':(exclude).gitignore'"
+
+[build.environment]
+  # Pin the toolchain so Netlify builds match local builds.
+  HUGO_VERSION = "0.165.0"
+  TZ = "America/New_York"
+
+# Deploy previews (pull requests) and branch deploys build against their own
+# generated URL so links and assets resolve on the preview host.
+[context.deploy-preview]
+  command = "hugo --gc --minify --baseURL $DEPLOY_PRIME_URL"
+
+[context.branch-deploy]
+  command = "hugo --gc --minify --baseURL $DEPLOY_PRIME_URL"
+
+# Keep one canonical hostname. Netlify issues certificates for both, but serving
+# the same content on two hosts splits SEO.
+[[redirects]]
+  from = "https://www.calaround.app/*"
+  to = "https://calaround.app/:splat"
+  status = 301
+  force = true
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Deliberately NO Cache-Control rule for the HTML. royalrumblestats.com carries a
+# `for = "/*.html"` rule, but header rules match the REQUEST path and this site
+# publishes pretty URLs — the request is `/support/`, never `/support/index.html`
+# — so copying that rule here would match nothing. Netlify's own default for
+# HTML is already `public, max-age=0, must-revalidate`, which is what the rule
+# was asking for. Confirm against the response headers on a deploy preview
+# rather than trusting this comment.
+
+# Everything published to /css/ carries a content hash in its filename
+# (baseof.html fingerprints it), so a change produces a NEW url and a cached
+# copy of the old one can never be stale. That is the whole precondition for
+# `immutable` — an UNfingerprinted file published into /css/ would be a
+# correctness bug, pinned in visitors' caches for a year with no way to bust it.
+# Anything in static/ is copied verbatim and gets none of that hashing, so it
+# must not be published to this path.
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# The screenshots are content-stable (see README: deliberately not downscaled,
+# replaced rather than edited) but carry no content hash, so they get a long
+# max-age WITHOUT `immutable` — a replaced image revalidates rather than being
+# pinned.
+[[headers]]
+  for = "/assets/img/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800, must-revalidate"

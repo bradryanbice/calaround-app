@@ -4,9 +4,18 @@ The public site for [CalAround](https://github.com/bradryanbice/calaround), an i
 photographs a work calendar, previews the diff, and syncs it to Apple Calendar. Live at
 <https://calaround.app>.
 
-**Hugo**, deployed to GitHub Pages by `.github/workflows/hugo.yml`. GitHub Pages only builds Jekyll
-natively, so the workflow builds the site and publishes it as a Pages artifact — the repo's Pages
-source is set to **GitHub Actions**, not a branch. Changing it back to a branch will break the deploy.
+**Hugo**, deployed by **Netlify** from `netlify.toml` — the same host as bradbice.com,
+playoffsbracket.com and royalrumblestats.com. Build settings live in that file, not in the Netlify
+UI: build command, publish directory, `HUGO_VERSION`, redirects and headers are all committed here,
+so changing them in the dashboard would be overwritten on the next deploy.
+
+`netlify.toml` mirrors royalrumblestats.com, which is the closest sibling — same Hugo version, and
+no dart-sass step, because this site's one stylesheet is plain CSS through Hugo's own pipeline
+rather than SCSS.
+
+The old GitHub Pages deploy (`.github/workflows/hugo.yml`, plus `static/CNAME`) is **still in place
+on purpose** — see the checklist below. It comes out once calaround.app is confirmed serving from
+Netlify, not before.
 
 ```
 hugo server        # local preview
@@ -27,20 +36,47 @@ minified and **fingerprinted**, so the published filename carries a content hash
 stylesheet is therefore a new URL and can never be served stale from cache. Images stay in
 `static/` because they don't change.
 
-`static/CNAME` holds the custom domain. `static/assets/img/` holds the app screenshots at the
+`static/CNAME` holds the custom domain **for GitHub Pages only** — Netlify takes the domain from
+its own settings and ignores this file. `static/assets/img/` holds the app screenshots at the
 iPhone 17 Pro's native 1206×2622, converted to WebP — deliberately **not** downscaled, because the
 phone renders are large and crispness was the point.
 
+## The contact form
+
+`/support/` posts to **Netlify Forms**. There is no third-party form service and no endpoint to
+configure — the wiring is three attributes on the `<form>` in `content/support.md`:
+
+| Piece | Why it is there |
+| --- | --- |
+| `name="contact"` + `data-netlify="true"` | Netlify's post-processing parses the **deployed** HTML, finds the form by name, and starts accepting posts. `data-netlify` is the documented spelling of the bare `netlify` attribute, and is valid HTML5. |
+| `<input type="hidden" name="form-name" value="contact">` | Attributes the submission to that form. Without it the POST is accepted and filed nowhere. |
+| `netlify-honeypot="bot-field"` + the `.hp` field | Spam trap. Hidden from people, filled by bots, silently dropped. |
+
+`action="/thanks/"` sends a successful submission to `content/thanks.md` instead of Netlify's
+generic success page. That page is `build.list: never`, so it stays out of the sitemap and every
+page list.
+
+Because detection happens at **deploy** time against the built HTML, the form does nothing on
+`hugo server` locally and nothing on a branch that hasn't deployed. Test it on a deploy preview or
+the live site, not locally.
+
 ## Before this goes live
 
-- [ ] **Replace `formEndpoint` in `hugo.toml`** with a real Formspree form ID. The contact form on
-      `/support/` posts to a placeholder and a visible TODO banner sits above it until you do. The
-      banner is styled `.formtodo` — delete that `<p>` when the endpoint is real.
+- [ ] **Finish the Netlify migration.** Repo-side config is committed; the rest is dashboard and
+      DNS work — see [issue #1](https://github.com/bradryanbice/calaround-app/issues/1) for the
+      full checklist. In short: connect the repo as a new site, confirm it renders on the
+      `*.netlify.app` subdomain, add `calaround.app` as a custom domain, move DNS at Namecheap,
+      confirm the Let's Encrypt cert provisions.
+- [ ] **Turn on form notifications.** Netlify → Forms → *contact* → notifications → email. Then
+      submit the live form once and confirm it lands in the dashboard **and** in the inbox. A form
+      that collects silently is worse than no form.
 - [ ] **Have the legal pages reviewed.** `content/privacy.md` and `content/terms.md` are drafts
       written to describe what the app actually does, not lawyer-reviewed documents. The privacy
       page is accurate as of the audit below; the terms are a reasonable starting point, not advice.
-- [ ] Point `calaround.app` DNS at GitHub Pages, and set Settings → Pages → Source to
-      **GitHub Actions**.
+- [ ] **Decommission GitHub Pages** once calaround.app serves from Netlify: delete
+      `.github/workflows/hugo.yml` and `static/CNAME`, and set Settings → Pages → Source to None.
+      Do this last — while both exist, Pages keeps building harmlessly, and it is the fallback if
+      the DNS move needs backing out.
 - [ ] Add the site URL to the App Store Connect listing.
 
 ## The privacy page is not a template
