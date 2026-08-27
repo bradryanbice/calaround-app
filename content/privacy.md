@@ -1,6 +1,6 @@
 ---
 title: "Privacy Policy"
-kicker: "Last updated 26 August 2026"
+updated: "26 August 2026"
 description: "CalAround has no account, no server of its own, and no analytics. The one thing that can leave your device is the photo you choose to scan — and only to the reader you pick."
 ---
 

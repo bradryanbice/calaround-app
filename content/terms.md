@@ -1,6 +1,6 @@
 ---
 title: "Terms of Use"
-kicker: "Last updated 26 August 2026"
+updated: "26 August 2026"
 description: "The agreement covering your use of CalAround. Short, because the app does little on your behalf and holds none of your data."
 ---
 

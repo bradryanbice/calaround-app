@@ -1,6 +1,5 @@
 ---
 title: "Message sent"
-kicker: "Contact"
 description: "It landed. Netlify has it, and it comes through to email."
 # Not listed anywhere and kept out of the sitemap — this page only exists as the
 # contact form's success target, and Netlify redirects here after a submission.

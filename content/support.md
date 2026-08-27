@@ -1,6 +1,5 @@
 ---
 title: "Support"
-kicker: "Help and contact"
 description: "Common questions about why CalAround works the way it does, and a way to reach a human."
 ---
 

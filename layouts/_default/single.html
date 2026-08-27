@@ -2,9 +2,9 @@
 <header class="pagehead">
   {{ partial "grid.html" (dict "h" 340) }}
   <div class="bar">
-    {{ with .Params.kicker }}<p class="kicker">{{ . }}</p>{{ end }}
     <h1>{{ .Title }}</h1>
     {{ with .Description }}<p class="lede">{{ . }}</p>{{ end }}
+    {{ with .Params.updated }}<p class="updated">Last updated {{ . }}</p>{{ end }}
   </div>
 </header>
 
