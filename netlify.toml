@@ -6,23 +6,62 @@
   publish = "public"
   command = "hugo --gc --minify"
 
-  # Skip the deploy when nothing Hugo reads has changed. A build here is almost
-  # entirely fixed overhead — the site builds in well under a second and the
-  # deploy around it is minutes of clone, toolchain and upload — so the only
-  # lever on build minutes is the NUMBER of deploys.
+  # ---------------------------------------------------------------------------
+  # THE BUILD-SKIP RULE IS DISABLED. Do not re-enable it without reading this.
   #
-  # None of the excluded paths is a Hugo input. hugo.toml declares no custom
-  # module mounts, so Hugo reads content/, data/, layouts/, assets/, static/,
-  # themes/, i18n/, archetypes/ and hugo.toml. netlify.toml itself is
-  # deliberately NOT excluded: headers and redirects are applied at deploy time,
-  # so a change to them needs a deploy.
+  # It carried TWO independent defects. The guard on the commented-out line
+  # below fixes the first. Nothing fixes the second except not running the rule,
+  # which is why it is off.
   #
-  # `git diff --quiet` exits 0 on no difference and Netlify reads exit 0 as
-  # "skip". Every way this can go wrong — an empty $CACHED_COMMIT_REF on a first
-  # build or after a cache clear, a ref missing from the shallow clone, a bad
-  # pathspec — exits non-zero and therefore BUILDS. The failure mode is a wasted
-  # deploy, not a stale site.
-  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- . ':(exclude).github' ':(exclude)README.md' ':(exclude).gitignore'"
+  # DEFECT 1 — empty $CACHED_COMMIT_REF. `git diff --quiet` exits 0 on no
+  # difference and Netlify reads exit 0 as "skip", so every failure path must
+  # exit NON-zero to fail safe by building. On a first build, or after a cache
+  # clear, $CACHED_COMMIT_REF is empty; UNQUOTED it vanishes from the command
+  # line, leaving
+  #     git diff --quiet $COMMIT_REF -- .
+  # which compares that commit against the WORKING TREE. On a clean checkout
+  # that is no difference, exit 0, SKIP — no site published, reported as a
+  # skipped build rather than a failure. The `[ -n ... ] &&` guard short-circuits
+  # to exit 1 there, and the quotes stop the same collapse recurring. Verified
+  # against this repo, all five cases: empty ref → 1 BUILD, unknown ref → 128
+  # BUILD, content change → 1 BUILD, README-only → 0 SKIP, identical refs → 0
+  # SKIP. The bare unguarded form is what Netlify's own docs show.
+  #
+  # DEFECT 2 — a merge whose tree was already previewed. This one the guard does
+  # NOT cover: the ref is set and the diff is honestly empty. It took
+  # headedapp.com down on 2026-08-29 (see that repo's netlify.toml). main had not
+  # moved while the branch was open, so the merge commit's tree was
+  # BYTE-IDENTICAL to the branch tip a deploy preview had already built.
+  # $CACHED_COMMIT_REF for the production build therefore pointed at that
+  # PREVIEW; the rule diffed preview vs merge, found no change, and skipped.
+  # Netlify reports a skipped build as "Canceled".
+  #
+  # The rule was correct that no content had changed, and wrong anyway: it
+  # reasons about CONTENT when the thing that matters is CONTEXT — a deploy
+  # preview is not a production publish. On headed, production had never
+  # published, so the failure mode was an outage. Here it is milder and still
+  # unacceptable: calaround.app IS published and serving, so a wrongly-skipped
+  # merge leaves the PREVIOUS deploy up and the merged changes silently never go
+  # live. That is precisely the "stale site" this block used to claim was
+  # impossible. main not moving while a branch is open is the normal case on a
+  # solo-maintained site, so this is a routine path, not a corner.
+  #
+  # Every push now builds, which is Netlify's default and costs a few seconds
+  # per deploy. The rule only ever saved fixed overhead on no-op pushes.
+  #
+  # Before reinstating: re-enable on a branch, then confirm a production build
+  # still RUNS after a merge whose tree was already previewed — that is the exact
+  # case that broke. Reinstate the guarded form below, never the bare one.
+  # ---------------------------------------------------------------------------
+  #
+  # Skip the deploy when nothing Hugo reads has changed. None of the excluded
+  # paths is a Hugo input: hugo.toml declares no custom module mounts, so Hugo
+  # reads content/, data/, layouts/, assets/, static/, themes/, i18n/,
+  # archetypes/ and hugo.toml. netlify.toml itself is deliberately NOT excluded —
+  # headers and redirects are applied at deploy time, so a change to them needs a
+  # deploy.
+  #
+  # ignore = '''[ -n "$CACHED_COMMIT_REF" ] && git diff --quiet "$CACHED_COMMIT_REF" "$COMMIT_REF" -- . ':(exclude).github' ':(exclude)README.md' ':(exclude).gitignore' '''
 
 [build.environment]
   # Pin the toolchain so Netlify builds match local builds.
