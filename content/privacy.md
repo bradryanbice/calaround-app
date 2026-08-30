@@ -35,7 +35,7 @@ CalAround itself does not store the photograph. It is held in memory for the len
 
 ### Your API key
 
-If you use the Claude reader, you paste your own Anthropic API key into Settings. It is stored in the **iOS Keychain** on that device. It is never written to a file, never logged, never bundled into the app, and never sent anywhere except to Anthropic's API in the request header. Remove it in Settings at any time.
+If you use the Claude reader, you paste your own Anthropic API key into Settings. It is stored in the **iOS Keychain** on that device — and only that device: the key is excluded from backups and device transfers, so moving to a new iPhone means pasting it again. It is never written to a file, never logged, never bundled into the app, and never sent anywhere except to Anthropic's API in the request header. Remove it in Settings at any time.
 
 ## Your calendar
 
@@ -69,7 +69,7 @@ This feature is **off by default and opt-in.** When enabled, CalAround re-checks
 - **Preferences.** Your chosen reader, conflict threshold, title-privacy rules, and which events you have pinned.
 - **Your API key**, in the Keychain, if you added one.
 
-All of it lives in the app's own container and is removed when you delete the app. It is included in an encrypted iPhone backup if you make one, the same as any other app's data.
+All of it lives in the app's own container and is removed when you delete the app. Scan history and preferences are included in an encrypted iPhone backup if you make one, the same as any other app's data; the API key is not — it never leaves the device it was pasted on.
 
 ## Title privacy
 
