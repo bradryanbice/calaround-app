@@ -24,7 +24,7 @@ CalAround offers more than one reader, named on the Scan screen and in Settings 
 | Reader | What happens to the photo |
 | --- | --- |
 | **Claude** | The image is resized, compressed, and sent over HTTPS to Anthropic's API to be read. The extracted events come back; the image is not kept by CalAround afterwards. |
-| **Apple Intelligence** *(iOS 27)* | The image is read on your iPhone. It does not leave the device. |
+| **Apple Intelligence** *(planned)* | The image is read on your iPhone. It does not leave the device. |
 | **Sample data** | No photo is read at all. A fixed demo week is returned so you can try the app. |
 
 **With the Claude reader, your photo leaves your device.** That is worth stating flatly rather than burying: a photo of an Outlook week contains your meeting titles, and usually your colleagues' names and your employer's business. If that is not something you want to send to a third party, use a different reader, or don't scan that week.
@@ -48,7 +48,7 @@ CalAround asks for calendar access, and the level it asks for changes what it ca
 
 Whichever you grant, the same limits hold:
 
-- CalAround writes **only** to a calendar it creates, named **Work (Scanned)**. It never modifies or deletes an event on any other calendar, ever.
+- CalAround writes to **one calendar at a time — the one you choose**. By default that is a calendar it creates, named **Work (Scanned)**, where a rescan can add, update, and remove its own events. If you point it at a calendar you already had, it **only ever adds** — it cannot tell its events from yours there, so it never modifies or deletes anything on a calendar it didn't create. Events on every other calendar are untouched, ever.
 - It only acts within the **date range the scanned photo actually showed**. Events outside that range are untouchable.
 - Conflict detection **reads** your other calendars to compare times. It does not copy, upload, or store their contents — a clash is evaluated and shown, and the comparison is discarded.
 
@@ -60,6 +60,7 @@ This feature is **off by default and opt-in.** When enabled, CalAround re-checks
 
 - It requires **full** calendar access and notification permission. You will be asked for both.
 - Notifications are **local** — generated on your iPhone by iOS. Nothing is sent to a server to produce them.
+- The notification text **names the two clashing meetings**. Whether that text is visible on your lock screen is iOS's preview setting — **Settings › Notifications › Show Previews**, which hides it until unlock by default on Face ID devices.
 - iOS decides when to wake a background app, so a notification can arrive minutes — occasionally hours — after the change. Opening CalAround always checks immediately.
 
 ## What is stored on your device
