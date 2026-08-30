@@ -1,6 +1,6 @@
 ---
 title: "Privacy Policy"
-updated: "26 August 2026"
+updated: "30 August 2026"
 description: "CalAround has no account, no server of its own, and no analytics. The one thing that can leave your device is the photo you choose to scan — and only to the reader you pick."
 ---
 
@@ -72,7 +72,11 @@ All of it lives in the app's own container and is removed when you delete the ap
 
 ## Title privacy
 
-CalAround can rewrite meeting titles *before* anything is written to your calendar — so a rule like *title contains "1:1" → write "Busy"* keeps names off a calendar that may be shared or visible on a lock screen. The rules run on your device, before the write, and what you review in the app is exactly what will land.
+Three things happen to meeting titles *before* anything is written to your calendar. All of them run on your device, and what you review in the app is exactly what will land.
+
+- **Join links are always stripped.** Zoom, Teams, and Meet links, dial-in numbers, meeting IDs, and passcodes are removed from titles on every scan. This is not a setting — that joining junk is never stored, full stop.
+- **People's names become initials, by default.** *1:1 with Marta Chen* lands as *1:1 with M.C.* Names are detected on your iPhone using Apple's on-device text analysis — the detection sends nothing anywhere — and every title this touches is labelled **Name hidden** on the review screen, so nothing is rewritten behind your back. Turn it off in Settings if you'd rather keep names.
+- **Your own rules run first.** A rule like *title contains "1:1" → write "Busy"* replaces the whole title, and the first matching rule wins. A rule's replacement is used as you wrote it — the name-hiding pass doesn't second-guess words you chose on purpose.
 
 This is a convenience, not a security boundary: it changes what is written to your calendar, not what was in the photo you scanned.
 
