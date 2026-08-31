@@ -24,7 +24,7 @@ CalAround offers more than one reader, named on the Scan screen and in Settings 
 | Reader | What happens to the photo |
 | --- | --- |
 | **Claude** | The image is resized, compressed, and sent over HTTPS to Anthropic's API to be read. The extracted events come back; the image is not kept by CalAround afterwards. |
-| **Apple Intelligence** *(planned)* | The image is read on your iPhone. It does not leave the device. |
+| **Apple Intelligence** | The photo is read entirely on your iPhone — the text recognition and the language model both run on the device. Nothing about the photo or the meetings leaves it. Requires a device with Apple Intelligence. |
 | **Sample data** | No photo is read at all. A fixed demo week is returned so you can try the app. |
 
 **With the Claude reader, your photo leaves your device.** That is worth stating flatly rather than burying: a photo of an Outlook week contains your meeting titles, and usually your colleagues' names and your employer's business. If that is not something you want to send to a third party, use a different reader, or don't scan that week.
