@@ -1,6 +1,6 @@
 ---
 title: "Privacy Policy"
-updated: "30 August 2026"
+updated: "31 August 2026"
 description: "CalAround has no account, no server of its own, and no analytics. The one thing that can leave your device is the photo you choose to scan — and only to the reader you pick."
 ---
 
@@ -12,19 +12,20 @@ It is written plainly on purpose. If something here is unclear, [ask](/support/#
 
 - There is **no CalAround account** and **no CalAround server**. Nothing is uploaded to us, because there is no us to upload to.
 - There is **no analytics, no tracking, no advertising, and no third-party SDK** of any kind in the app.
-- The **one** thing that can leave your device is a photo you explicitly choose to scan, and only when you have selected the Claude reader.
+- CalAround **reads your photo on your iPhone by default**. Nothing about it leaves the device unless you switch to the Claude reader yourself.
+- The **one** thing that can ever leave your device is a photo you explicitly choose to scan, and only when you have selected the Claude reader.
 - Your calendar data stays on your iPhone and in your own iCloud, exactly as it did before you installed anything.
 
 ## The photo you scan
 
 This is the part that deserves real care, because it depends on a choice you make.
 
-CalAround offers more than one reader, named on the Scan screen and in Settings every time:
+CalAround offers more than one reader, named on the Scan screen and in Settings every time. **Apple Intelligence is the default**, so unless you change it, no photo is sent anywhere:
 
 | Reader | What happens to the photo |
 | --- | --- |
+| **Apple Intelligence** *(default)* | The photo is read entirely on your iPhone — the text recognition and the language model both run on the device. Nothing about the photo or the meetings leaves it. Requires a device with Apple Intelligence; if yours can't run it, the app says so and you pick another reader. |
 | **Claude** | The image is resized, compressed, and sent over HTTPS to Anthropic's API to be read. The extracted events come back; the image is not kept by CalAround afterwards. |
-| **Apple Intelligence** | The photo is read entirely on your iPhone — the text recognition and the language model both run on the device. Nothing about the photo or the meetings leaves it. Requires a device with Apple Intelligence. |
 | **Sample data** | No photo is read at all. A fixed demo week is returned so you can try the app. |
 
 **With the Claude reader, your photo leaves your device.** That is worth stating flatly rather than burying: a photo of an Outlook week contains your meeting titles, and usually your colleagues' names and your employer's business. If that is not something you want to send to a third party, use a different reader, or don't scan that week.
@@ -35,7 +36,7 @@ CalAround itself does not store the photograph. It is held in memory for the len
 
 ### Your API key
 
-If you use the Claude reader, you paste your own Anthropic API key into Settings. It is stored in the **iOS Keychain** on that device — and only that device: the key is excluded from backups and device transfers, so moving to a new iPhone means pasting it again. It is never written to a file, never logged, never bundled into the app, and never sent anywhere except to Anthropic's API in the request header. Remove it in Settings at any time.
+**You only need a key if you choose the Claude reader.** The default on-device reader needs none, and a fresh install asks for nothing. If you do use Claude, you paste your own Anthropic API key into Settings. It is stored in the **iOS Keychain** on that device — and only that device: the key is excluded from backups and device transfers, so moving to a new iPhone means pasting it again. It is never written to a file, never logged, never bundled into the app, and never sent anywhere except to Anthropic's API in the request header. Remove it in Settings at any time.
 
 ## Your calendar
 
@@ -76,7 +77,9 @@ All of it lives in the app's own container and is removed when you delete the ap
 Three things happen to meeting titles *before* anything is written to your calendar. All of them run on your device, and what you review in the app is exactly what will land.
 
 - **Join links are always stripped.** Zoom, Teams, and Meet links, dial-in numbers, meeting IDs, and passcodes are removed from titles on every scan. This is not a setting — that joining junk is never stored, full stop.
-- **People's names become initials, by default.** *1:1 with Marta Chen* lands as *1:1 with M.C.* Names are detected on your iPhone using Apple's on-device text analysis — the detection sends nothing anywhere — and every title this touches is labelled **Name hidden** on the review screen, so nothing is rewritten behind your back. Turn it off in Settings if you'd rather keep names.
+- **People's names become initials, by default.** *1:1 with Marta Chen* lands as *1:1 with M.C.* Names are detected on your iPhone using Apple's on-device text analysis — the detection sends nothing anywhere — and every title this touches is labelled **Name hidden** on the review screen, so nothing is rewritten behind your back.
+
+  You can turn it off in Settings if you'd rather keep names, but the app will ask you to confirm first and tell you what changes: names get written to your calendar in full, where anyone you share that calendar with can read them, and where they show on your lock screen unless you have previews hidden. While it stays off, Settings keeps showing a reminder that it is off. Your choice is remembered until you change it back.
 - **Your own rules run first.** A rule like *title contains "1:1" → write "Busy"* replaces the whole title, and the first matching rule wins. A rule's replacement is used as you wrote it — the name-hiding pass doesn't second-guess words you chose on purpose.
 
 This is a convenience, not a security boundary: it changes what is written to your calendar, not what was in the photo you scanned.

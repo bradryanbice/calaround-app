@@ -44,7 +44,9 @@ Almost always the photo. Four things fix most of it:
 
 ## Do I need an API key?
 
-Only for the Claude reader, which is the one available today. You supply your own key from [Anthropic](https://console.anthropic.com), and it's stored in your iPhone's Keychain. Once the on-device Apple Intelligence reader ships with iOS 27, no key will be needed and it becomes the default.
+No. CalAround reads photos on your iPhone by default, using Apple Intelligence, and that needs no key and no account.
+
+A key is only for the **Claude** reader, which you have to choose. You supply your own from [Anthropic](https://console.anthropic.com), it's stored in your iPhone's Keychain, and any charges are between you and them.
 
 You can try the whole app with no key at all: **Settings → Read photos with → Sample data (demo)**.
 
