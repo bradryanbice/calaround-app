@@ -13,9 +13,10 @@ so changing them in the dashboard would be overwritten on the next deploy.
 no dart-sass step, because this site's one stylesheet is plain CSS through Hugo's own pipeline
 rather than SCSS.
 
-The old GitHub Pages deploy (`.github/workflows/hugo.yml`, plus `static/CNAME`) is **still in place
-on purpose** — see the checklist below. It comes out once calaround.app is confirmed serving from
-Netlify, not before.
+**Netlify is the only deploy path.** The old GitHub Pages deploy
+(`.github/workflows/hugo.yml`, plus `static/CNAME`) was removed on 2026-08-31 once calaround.app
+was confirmed serving from Netlify, and the Pages site itself is deleted. There is no fallback now:
+backing the DNS out would mean restoring that workflow from git history first.
 
 ```
 hugo server        # local preview
@@ -36,8 +37,7 @@ minified and **fingerprinted**, so the published filename carries a content hash
 stylesheet is therefore a new URL and can never be served stale from cache. Images stay in
 `static/` because they don't change.
 
-`static/CNAME` holds the custom domain **for GitHub Pages only** — Netlify takes the domain from
-its own settings and ignores this file. `static/assets/img/` holds the app screenshots at the
+`static/assets/img/` holds the app screenshots at the
 iPhone 17 Pro's native 1206×2622, converted to WebP — deliberately **not** downscaled, because the
 phone renders are large and crispness was the point.
 
@@ -73,10 +73,14 @@ the live site, not locally.
 - [ ] **Have the legal pages reviewed.** `content/privacy.md` and `content/terms.md` are drafts
       written to describe what the app actually does, not lawyer-reviewed documents. The privacy
       page is accurate as of the audit below; the terms are a reasonable starting point, not advice.
-- [ ] **Decommission GitHub Pages** once calaround.app serves from Netlify: delete
-      `.github/workflows/hugo.yml` and `static/CNAME`, and set Settings → Pages → Source to None.
-      Do this last — while both exist, Pages keeps building harmlessly, and it is the fallback if
-      the DNS move needs backing out.
+- [x] **Decommission GitHub Pages** — done 2026-08-31, once calaround.app was confirmed serving
+      from Netlify (`server: Netlify`, apex on their ALIAS addresses, `www` CNAME'd to
+      `calaround-app.netlify.app`). `.github/workflows/hugo.yml` and `static/CNAME` are gone and
+      the Pages site is deleted. Netlify is now the only deploy path, and there is no fallback:
+      backing the DNS out would mean restoring the workflow from git history first.
+      `static/CNAME` mattered more than it looked — it made **GitHub Pages claim `calaround.app`
+      as its own custom domain**, so two services held the same name and only DNS decided which
+      answered. That claim is now released.
 - [ ] Add the site URL to the App Store Connect listing.
 
 ## The privacy page is not a template
