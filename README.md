@@ -67,9 +67,11 @@ the live site, not locally.
       full checklist. In short: connect the repo as a new site, confirm it renders on the
       `*.netlify.app` subdomain, add `calaround.app` as a custom domain, move DNS at Namecheap,
       confirm the Let's Encrypt cert provisions.
-- [ ] **Turn on form notifications.** Netlify → Forms → *contact* → notifications → email. Then
-      submit the live form once and confirm it lands in the dashboard **and** in the inbox. A form
-      that collects silently is worse than no form.
+- [x] **Turn on form notifications** — done 2026-08-31, confirmed by a live test submission coming
+      through. The form works end to end on the real domain. Worth remembering why this mattered:
+      Netlify detects a form at *deploy* time from the built HTML, so it did nothing at all while
+      GitHub Pages served the site, and it started genuinely accepting posts the moment DNS moved.
+      There was a window where submissions would have filed silently.
 - [ ] **Have the legal pages reviewed.** `content/privacy.md` and `content/terms.md` are drafts
       written to describe what the app actually does, not lawyer-reviewed documents. The privacy
       page is accurate as of the audit below; the terms are a reasonable starting point, not advice.
