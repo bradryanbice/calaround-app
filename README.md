@@ -96,6 +96,7 @@ Its factual claims were verified against the app source, not assumed:
 | Key in Keychain | `KeychainAPIKeyStore`, `kSecClassGenericPassword` |
 | On-device reader is the default | `AppSettings` defaults `providerID` to `"apple-fm"`; `AppleFMProvider` heads `CalAroundApp`'s `providers` array (2026-08-31) |
 | Name hiding warns before it is switched off | `SettingsView` — the toggle's setter raises an alert instead of applying `false`, and a caution row persists while it is off (2026-08-31) |
+| Name hiding warns when it cannot run | `NameRedactor.prepare()` proves the tagger finds a name before reporting ready; `ScanCoordinator` skips redaction on `.unavailable` and `ChangeReviewView` shows the warning (calaround#15, 2026-08-31) |
 
 **Re-run that audit before changing any privacy claim.** If the app gains a dependency, an endpoint,
 or a crash reporter, this page is wrong until it is updated.

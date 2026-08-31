@@ -80,9 +80,11 @@ Three things happen to meeting titles *before* anything is written to your calen
 - **People's names become initials, by default.** *1:1 with Marta Chen* lands as *1:1 with M.C.* Names are detected on your iPhone using Apple's on-device text analysis — the detection sends nothing anywhere — and every title this touches is labelled **Name hidden** on the review screen, so nothing is rewritten behind your back.
 
   You can turn it off in Settings if you'd rather keep names, but the app will ask you to confirm first and tell you what changes: names get written to your calendar in full, where anyone you share that calendar with can read them, and where they show on your lock screen unless you have previews hidden. While it stays off, Settings keeps showing a reminder that it is off. Your choice is remembered until you change it back.
+
+  **If name hiding can't run, CalAround says so rather than pretending.** The detection relies on a language model that iOS downloads on demand, and on a device where it isn't available yet the app checks, finds it can't hide names, and puts a warning at the top of the review screen saying names will be written in full. It does not quietly write full names under a setting that claims otherwise — a silent failure here would be indistinguishable from a week that simply had no names in it, which is exactly why the app tests the detector before trusting it.
 - **Your own rules run first.** A rule like *title contains "1:1" → write "Busy"* replaces the whole title, and the first matching rule wins. A rule's replacement is used as you wrote it — the name-hiding pass doesn't second-guess words you chose on purpose.
 
-This is a convenience, not a security boundary: it changes what is written to your calendar, not what was in the photo you scanned.
+This is a convenience, not a security boundary: it changes what is written to your calendar, not what was in the photo you scanned. What the review screen shows you is always what will land — including when a pass didn't run.
 
 ## Children
 
