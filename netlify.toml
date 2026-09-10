@@ -65,7 +65,7 @@
 
 [build.environment]
   # Pin the toolchain so Netlify builds match local builds.
-  HUGO_VERSION = "0.165.0"
+  HUGO_VERSION = "0.166.0"
   TZ = "America/New_York"
 
 # Deploy previews (pull requests) and branch deploys build against their own
