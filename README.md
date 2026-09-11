@@ -41,10 +41,27 @@ stylesheet is therefore a new URL and can never be served stale from cache. Imag
 iPhone 17 Pro's native 1206×2622, converted to WebP — deliberately **not** downscaled, because the
 phone renders are large and crispness was the point.
 
-**Three of them show features the app no longer has** (as of 2026-09-10) and need recapturing:
-`02-review-conflicts` (the hero — a conflict banner), `04-week-grid` (conflict stripes; no longer
-used on the page), and `06-photo-vs-parsed` (per-event outlines on the photo — source regions were
-removed from the extraction schema). The page copy around them has already been corrected.
+**All seven were recaptured on 2026-09-11** from the simplified app (calaround `main` at
+`4a87f12`), because every original showed something the 2026-09-10 simplification removed —
+conflicts, tight-fit warnings, confidence chips, the watcher's settings. They are real captures of
+the running app, not mockups, and the diff in them is a real diff:
+
+- **Device** — the "CalAround Verify" simulator (iPhone 17 Pro), light appearance, default text
+  size, status bar overridden to 9:41 with full battery: `xcrun simctl status_bar <udid> override
+  --time 9:41 --batteryState discharging --batteryLevel 100 --cellularMode notSupported`.
+- **Reader** — Sample data (demo), with full calendar access pre-granted
+  (`xcrun simctl privacy <udid> grant calendar com.bradbice.calaround`).
+- **The diff** — scan once and sync, after editing *Roadmap workshop* to 3:00 PM in review. Then,
+  in the simulator's Calendar app, delete *Release go/no-go* and add *Budget review* (Tue 2:30 PM)
+  to *Work (Scanned)*. The second scan shows 1 added, 1 moved, 1 removed. The removal has to come
+  from Calendar rather than from a review edit: an edited row keeps its original sync key, so it
+  would pair back up and show as a move.
+- **The photo in `06`** — the Sample week drawn by `CalAroundEval`'s `OutlookRenderer`, so the
+  photo and the parsed list genuinely match. Added to the simulator with `xcrun simctl addmedia`.
+- **Encoding** — `xcrun simctl io <udid> screenshot`, then `cwebp -q 90 -m 6`.
+
+`04-week-grid` is not used on the page since the conflicts section was removed; it is kept current
+in case it comes back.
 
 ## The contact form
 
