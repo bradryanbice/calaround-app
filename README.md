@@ -41,6 +41,11 @@ stylesheet is therefore a new URL and can never be served stale from cache. Imag
 iPhone 17 Pro's native 1206×2622, converted to WebP — deliberately **not** downscaled, because the
 phone renders are large and crispness was the point.
 
+**Three of them show features the app no longer has** (as of 2026-09-10) and need recapturing:
+`02-review-conflicts` (the hero — a conflict banner), `04-week-grid` (conflict stripes; no longer
+used on the page), and `06-photo-vs-parsed` (per-event outlines on the photo — source regions were
+removed from the extraction schema). The page copy around them has already been corrected.
+
 ## The contact form
 
 `/support/` posts to **Netlify Forms**. There is no third-party form service and no endpoint to
@@ -98,11 +103,22 @@ Its factual claims were verified against the app source, not assumed:
 | One outbound endpoint | `grep` for every URL in the codebase → only `api.anthropic.com/v1/messages` |
 | No analytics or tracking | `grep` for analytics/Firebase/Sentry/Segment/etc. → no hits |
 | No third-party code | every `Package.swift` dependency is a local `path:` — no remote packages |
-| Photos not persisted | scan history stores decoded events; the image is held in memory for the request only |
-| Key in Keychain | `KeychainAPIKeyStore`, `kSecClassGenericPassword` |
-| On-device reader is the default | `AppSettings` defaults `providerID` to `"apple-fm"`; `AppleFMProvider` heads `CalAroundApp`'s `providers` array (2026-08-31) |
+| Photos not persisted | `ScanHistoryEntry` stores decoded events and a changeset, no image data; no `FileManager`, `PHPhotoLibrary`, or `UIImageWriteToSavedPhotosAlbum` anywhere in the app |
+| What the request carries | `ImagePayload` — longest edge 1568 px, JPEG 0.85; `ClaudeProvider` adds only `ExtractionHints`' reference date and time zone, nothing from the calendar |
+| Key in Keychain, tied to the device | `KeychainAPIKeyStore`, `kSecClassGenericPassword`, `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly` |
+| Claude is the only reader that reads a photo | `CalAroundApp`'s `providers` array is `ClaudeProvider` then `SampleProvider`; `AppleFMProvider` is deleted; `AppSettings` defaults `providerID` to `"claude"`, and a device still holding `"apple-fm"` falls back to the first entry (2026-09-10) |
+| No notifications, no background work | `grep` for `UserNotifications` / `BGTaskScheduler` over the app and every package it links → none; `Info.plist` has no `UIBackgroundModes` or `BGTaskSchedulerPermittedIdentifiers`; `CalAroundConflict` is not linked by the app target (2026-09-10) |
+| Full access required, asked before the upload | `ScanCoordinator.scan()` requests `.full` before calling the provider and throws `calendarAccessDenied` without it; no caller requests write-only (2026-09-10) |
+| Reads events from the target calendar only | every `predicateForEvents` in `EventKitCalendarStore` passes `calendars: [calendar]`; `calendars(for:)` is used only for names in the picker |
+| May move or remove existing events on a calendar the user already had | `ownedEvents(in:)` returns every event on the target in range; `apply` modifies and deletes there whether or not the app created it; `SettingsView` shows a warning while `isAppOwned == false` (2026-09-10) |
+| One occurrence at a time | `save` / `remove` use `span: .thisEvent` |
+| Sync key on the event's `url`, never over a user's link | `EventKitCalendarStore.apply(_:to:)` writes the key only when `url` is empty or already a key; `SyncKey` stores a hash, not the title |
+| Undo re-creates without invitees, alerts, notes, or recurrence | `EventPayload` holds only title, start, end, all-day, and key; `revert` re-creates a deleted event from it |
 | Name hiding warns before it is switched off | `SettingsView` — the toggle's setter raises an alert instead of applying `false`, and a caution row persists while it is off (2026-08-31) |
 | Name hiding warns when it cannot run | `NameRedactor.prepare()` proves the tagger finds a name before reporting ready; `ScanCoordinator` skips redaction on `.unavailable` and `ChangeReviewView` shows the warning (calaround#15, 2026-08-31) |
+
+Last re-run **2026-09-10**, against the simplification on calaround's `simplify/full-edit-calendar`,
+which removed the on-device reader, conflicts and the watcher, pins, and add-only mode.
 
 **Re-run that audit before changing any privacy claim.** If the app gains a dependency, an endpoint,
 or a crash reporter, this page is wrong until it is updated.

@@ -1,7 +1,7 @@
 ---
 title: "Privacy Policy"
-updated: "31 August 2026"
-description: "CalAround has no account, no server of its own, and no analytics. The one thing that can leave your device is the photo you choose to scan — and only to the reader you pick."
+updated: "10 September 2026"
+description: "CalAround has no account, no server of its own, and no analytics. The one thing that leaves your device is the photo you choose to scan, sent to Anthropic to be read."
 ---
 
 CalAround photographs your work calendar and writes the meetings into a calendar on your iPhone. This page says exactly what that touches, what leaves the device, and what does not.
@@ -12,65 +12,59 @@ It is written plainly on purpose. If something here is unclear, [ask](/support/#
 
 - There is **no CalAround account** and **no CalAround server**. Nothing is uploaded to us, because there is no us to upload to.
 - There is **no analytics, no tracking, no advertising, and no third-party SDK** of any kind in the app.
-- CalAround **reads your photo on your iPhone by default**. Nothing about it leaves the device unless you switch to the Claude reader yourself.
-- The **one** thing that can ever leave your device is a photo you explicitly choose to scan, and only when you have selected the Claude reader.
+- **The photo you scan is sent to Anthropic to be read.** That is the one thing that ever leaves your device, and only when you tap Scan.
+- CalAround edits **one calendar — the one you choose** — and only within the week you scanned. If you choose a calendar you already had, that can include **moving or removing events that were already on it**.
 - Your calendar data stays on your iPhone and in your own iCloud, exactly as it did before you installed anything.
 
 ## The photo you scan
 
-This is the part that deserves real care, because it depends on a choice you make.
-
-CalAround offers more than one reader, named on the Scan screen and in Settings every time. **Apple Intelligence is the default**, so unless you change it, no photo is sent anywhere:
+CalAround has one reader that reads photos, and a demo that doesn't. Whichever is selected is named on the Scan screen and in Settings.
 
 | Reader | What happens to the photo |
 | --- | --- |
-| **Apple Intelligence** *(default)* | The photo is read entirely on your iPhone — the text recognition and the language model both run on the device. Nothing about the photo or the meetings leaves it. Requires a device with Apple Intelligence; if yours can't run it, the app says so and you pick another reader. |
-| **Claude** | The image is resized, compressed, and sent over HTTPS to Anthropic's API to be read. The extracted events come back; the image is not kept by CalAround afterwards. |
-| **Sample data** | No photo is read at all. A fixed demo week is returned so you can try the app. |
+| **Claude** *(the reader)* | The image is resized so its longest edge is at most 1,568 pixels, compressed as a JPEG, and sent over HTTPS to Anthropic's API to be read. The extracted events come back; the image is not kept by CalAround afterwards. Along with the image, the request carries today's date and your time zone, so relative labels like "Mon 25" can be read — nothing from your calendar is sent. |
+| **Sample data** | No photo is read and nothing is sent. A fixed demo week is returned so you can try the app; syncing it writes those demo events to your calendar like any other scan. |
 
-**With the Claude reader, your photo leaves your device.** That is worth stating flatly rather than burying: a photo of an Outlook week contains your meeting titles, and usually your colleagues' names and your employer's business. If that is not something you want to send to a third party, use a different reader, or don't scan that week.
+**Your photo leaves your device.** That is worth stating flatly rather than burying: a photo of an Outlook week contains your meeting titles, and usually your colleagues' names and your employer's business. If that is not something you want to send to a third party, don't scan that week.
 
 Anthropic processes the image under **their** terms and privacy policy, not ours — see [anthropic.com/privacy](https://www.anthropic.com/privacy). Because you supply your own API key, that request is made under your own account with them, and their terms govern it directly. We make no claims on their behalf about retention.
 
-CalAround itself does not store the photograph. It is held in memory for the length of the scan and discarded. What is saved to your device is the *result*: the events that were read.
+CalAround itself does not store the photograph. It is held in memory while you scan and review, and discarded. What is saved to your device is the *result*: the events that were read.
 
 ### Your API key
 
-**You only need a key if you choose the Claude reader.** The default on-device reader needs none, and a fresh install asks for nothing. If you do use Claude, you paste your own Anthropic API key into Settings. It is stored in the **iOS Keychain** on that device — and only that device: the key is excluded from backups and device transfers, so moving to a new iPhone means pasting it again. It is never written to a file, never logged, never bundled into the app, and never sent anywhere except to Anthropic's API in the request header. Remove it in Settings at any time.
+**Scanning a photo needs your own Anthropic API key; the demo doesn't.** You paste the key into Settings. It is stored in the **iOS Keychain** on that device — and tied to that device: it does not move to a new iPhone through a backup or device transfer, so moving to a new iPhone means pasting it again. It is never written to a file, never logged, never bundled into the app, and never sent anywhere except to Anthropic's API in the request header. Remove it in Settings at any time.
 
 ## Your calendar
 
-CalAround asks for calendar access, and the level it asks for changes what it can do:
+CalAround needs **full** calendar access to scan, and asks for it when you tap Scan — before your photo is sent anywhere. Full access is what lets it see what is already on the calendar you choose, so a rescan can move and remove events instead of adding the week again. If you decline, or have granted only write-only access, scanning stops and the app tells you why; it does not fall back to adding blindly.
 
-| Access | What it allows |
-| --- | --- |
-| **Write-only** | Adding events. iOS does not permit reading events back with this level — including the app's own — so change detection and conflict checks are impossible, and CalAround can only add. |
-| **Full** | Reading back what it previously wrote, so a rescan can update or remove instead of duplicating, and so clashes with your other calendars can be flagged. |
+iOS grants full access to every calendar at once. CalAround reads events from **only one of them** — the one it writes to — plus the names of your calendars, so it can list them in Settings. Nothing it reads is uploaded.
 
-Whichever you grant, the same limits hold:
+What it does with that calendar:
 
-- CalAround writes to **one calendar at a time — the one you choose**. By default that is a calendar it creates, named **Work (Scanned)**, where a rescan can add, update, and remove its own events. If you point it at a calendar you already had, it **only ever adds** — it cannot tell its events from yours there, so it never modifies or deletes anything on a calendar it didn't create. Events on every other calendar are untouched, ever.
+- CalAround writes to **one calendar at a time — the one you choose**. By default that is a calendar it creates, named **Work (Scanned)**. You can choose a calendar you already had instead. Events on every other calendar are untouched, ever.
+- **On that calendar, a scan adds, moves, and removes.** It treats every event on it within the scanned week as something to keep in step with the photo — **including events you added yourself.**
+- **So if you choose a calendar you already had, CalAround may move or remove events that were already on it, within the scanned week.** An event of yours that the photo doesn't show will be listed for removal; one with the same title as a meeting in the photo may be listed to move to that meeting's time. Settings shows a warning for as long as such a calendar is selected. Pick a calendar that holds only your work meetings.
+- Nothing is moved or removed without a row you approved on the review screen. A repeating event is changed one occurrence at a time, never as a whole series.
 - It only acts within the **date range the scanned photo actually showed**. Events outside that range are untouchable.
-- Conflict detection **reads** your other calendars to compare times. It does not copy, upload, or store their contents — a clash is evaluated and shown, and the comparison is discarded.
+- Each event CalAround writes or moves carries a short code in its URL field so the next scan can recognise it even after name hiding has changed its title. The code is a hash, not the readable title. A link you put on an event yourself is never replaced.
 
-You can revoke access at any time in **Settings › Privacy & Security › Calendars**, and delete the *Work (Scanned)* calendar in Apple's Calendar app to remove everything CalAround ever wrote.
+**Undo this sync**, in History, reverses a sync: it removes what was added, moves back what was moved, and re-creates what was removed. A re-created event comes back with its title, time, and all-day setting — **not its invitees, alerts, notes, or repeat schedule**. That matters most on a calendar you already had, where a removed event may have carried all of those.
 
-## Watching your personal calendar
+You can revoke access at any time in **Settings › Privacy & Security › Calendars**. If CalAround wrote to its own *Work (Scanned)* calendar, deleting that calendar in Apple's Calendar app removes everything it ever wrote.
 
-This feature is **off by default and opt-in.** When enabled, CalAround re-checks for clashes when your calendars change and when you open the app, and can post a local notification when a new one appears.
+## Notifications and background activity
 
-- It requires **full** calendar access and notification permission. You will be asked for both.
-- Notifications are **local** — generated on your iPhone by iOS. Nothing is sent to a server to produce them.
-- The notification text **names the two clashing meetings**. Whether that text is visible on your lock screen is iOS's preview setting — **Settings › Notifications › Show Previews**, which hides it until unlock by default on Face ID devices.
-- iOS decides when to wake a background app, so a notification can arrive minutes — occasionally hours — after the change. Opening CalAround always checks immediately.
+**None.** CalAround does not ask to send notifications, posts none, and does not run in the background. It reads and writes your calendar only while you are using it.
 
 ## What is stored on your device
 
-- **Scan history.** The last 20 scans: the events read, when the scan happened, which reader produced it, and what each sync changed. This is what makes *Undo this sync* possible. It never includes the photograph.
-- **Preferences.** Your chosen reader, conflict threshold, title-privacy rules, and which events you have pinned.
+- **Scan history.** The last 20 scans: the events read, the date range, when the scan happened, which reader produced it, and what each sync changed. This is what makes *Undo this sync* possible. It never includes the photograph.
+- **Preferences.** Your chosen reader, which calendar to write to, your title-privacy rules, whether name hiding is on, and whether you have seen the introduction.
 - **Your API key**, in the Keychain, if you added one.
 
-All of it lives in the app's own container and is removed when you delete the app. Scan history and preferences are included in an encrypted iPhone backup if you make one, the same as any other app's data; the API key is not — it never leaves the device it was pasted on.
+All of it lives in the app's own container and is removed when you delete the app. Scan history and preferences are included in an encrypted iPhone backup if you make one, the same as any other app's data; the API key is stored so that it can only ever be restored to the iPhone it was pasted on.
 
 ## Title privacy
 
@@ -78,6 +72,8 @@ Three things happen to meeting titles *before* anything is written to your calen
 
 - **Join links are always stripped.** Zoom, Teams, and Meet links, dial-in numbers, meeting IDs, and passcodes are removed from titles on every scan. This is not a setting — that joining junk is never stored, full stop.
 - **People's names become initials, by default.** *1:1 with Marta Chen* lands as *1:1 with M.C.* Names are detected on your iPhone using Apple's on-device text analysis — the detection sends nothing anywhere — and every title this touches is labelled **Name hidden** on the review screen, so nothing is rewritten behind your back.
+
+  Name hiding happens after the photo is read, so it changes what is written to your calendar — the photo sent to Anthropic still shows names as they appear on your screen.
 
   You can turn it off in Settings if you'd rather keep names, but the app will ask you to confirm first and tell you what changes: names get written to your calendar in full, where anyone you share that calendar with can read them, and where they show on your lock screen unless you have previews hidden. While it stays off, Settings keeps showing a reminder that it is off. Your choice is remembered until you change it back.
 
@@ -93,6 +89,8 @@ CalAround is not directed at children and does not knowingly collect information
 ## Changes to this policy
 
 If what the app does changes, this page changes with it, and the date at the top moves. Material changes — particularly anything altering what leaves your device — will be called out in the app, not just here.
+
+**10 September 2026.** The on-device Apple Intelligence reader was removed, so every real scan now sends the photo to Anthropic. Removed alongside it: conflict detection, the opt-in watcher that re-checked your personal calendar and posted clash notifications, pinned events, and the rule that CalAround only ever *added* to a calendar it didn't create. It now adds, moves, and removes on whichever calendar you choose, and requires full calendar access to scan.
 
 ## Contact
 

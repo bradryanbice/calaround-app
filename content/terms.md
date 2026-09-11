@@ -1,6 +1,6 @@
 ---
 title: "Terms of Use"
-updated: "26 August 2026"
+updated: "10 September 2026"
 description: "The agreement covering your use of CalAround. Short, because the app does little on your behalf and holds none of your data."
 ---
 
@@ -10,7 +10,7 @@ CalAround is made by Brad Bice, an individual developer.
 
 ## What CalAround is
 
-An iOS app that reads calendar events from a photograph you take and writes them to a calendar it creates on your device. It is a convenience tool for getting information you already have into a form your phone can use.
+An iOS app that reads calendar events from a photograph you take and writes them to the calendar you choose on your device — one it creates for the purpose, or one you already had. It is a convenience tool for getting information you already have into a form your phone can use.
 
 It is **not** a system of record. Your employer's calendar remains the authority on your work schedule. CalAround's copy is a copy.
 
@@ -21,14 +21,14 @@ It is **not** a system of record. Your employer's calendar remains the authority
 You also agree to:
 
 - Use the app only for calendars you are entitled to see.
-- Supply your own Anthropic API key if you use the Claude reader, and comply with [Anthropic's terms](https://www.anthropic.com/legal/consumer-terms) for that use. Any charges Anthropic bills to your account are between you and them.
+- Supply your own Anthropic API key to use the Claude reader, and comply with [Anthropic's terms](https://www.anthropic.com/legal/consumer-terms) for that use. Any charges Anthropic bills to your account are between you and them.
 - Not attempt to use the app to access, alter, or delete calendar data belonging to anyone else.
 
 ## Accuracy, and what that means for you
 
-Reading text from a photograph is inherently uncertain. CalAround marks what it is unsure of and requires you to approve every change before it is written — that review step exists precisely because the reading can be wrong.
+Reading text from a photograph is inherently uncertain. CalAround requires you to approve every change before it is written — that review step exists precisely because the reading can be wrong.
 
-**Check the diff before you sync.** Once you approve a change, you have accepted it. A meeting read at the wrong time, a meeting missed entirely, or a meeting removed because it wasn't visible in your photo are all possible outcomes, and the review screen is where you catch them.
+**Check the diff before you sync.** Once you approve a change, you have accepted it. A meeting read at the wrong time, a meeting missed entirely, or a meeting removed because it wasn't visible in your photo are all possible outcomes, and the review screen is where you catch them. If you point CalAround at a calendar you already had, that includes events you put there yourself.
 
 Do not rely on CalAround as your only record of a commitment that matters.
 
@@ -46,7 +46,7 @@ Nothing here excludes liability that cannot lawfully be excluded.
 
 ## Third-party services
 
-If you use the Claude reader, images are sent to Anthropic under your own API account. Anthropic is an independent third party; their terms and privacy policy govern that processing, and we are not responsible for their services.
+When you scan a photo with the Claude reader, the image is sent to Anthropic under your own API account. Anthropic is an independent third party; their terms and privacy policy govern that processing, and we are not responsible for their services.
 
 ## Privacy
 
